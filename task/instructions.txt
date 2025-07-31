@@ -1,0 +1,12 @@
+1.Model the relationships of a Task Management software using Spring JPA. Assume that you have the following
+requirements for data storage:
+- Tasks have a title, dueDate and a boolean status.
+- There are 2 types of tasks: BillableTask and InternalTask.
+- BillableTask have an additional hourlyRate attribute.
+2.Model the relationships of a PR company using Spring JPA. Assume that you have the following requirements for data
+storage:
+- The database consists of Contacts. Each Contact has a name, title and company.
+- Names are their own object and have a firstName, lastName, middleName and salutation.
+- Names should be embedded within the Contact entity and not be stored in a separate table.
+3.List 3 tasks that can be accomplished with native SQL that you cannot do with JPQL. Explain why you would choose to
+use native SQL over JPQL for these specific tasks.
