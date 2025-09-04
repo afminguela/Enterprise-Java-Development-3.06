@@ -2,8 +2,7 @@ package com.taskjava.task.models;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import org.antlr.v4.runtime.misc.NotNull;
-import org.springframework.data.relational.core.mapping.Column;
+import jakarta.persistence.Column;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,13 +11,10 @@ import java.time.LocalDate;
 @DiscriminatorValue("BILLABLE")
 public class BillableTask extends Task {
 
-    @NotNull(message = "Hourly rate cannot be null")
-
-    @Column(name = "hourly_rate", precision = 10, scale = 2, nullable = false)
+    @Column(name = "hourly_rate", nullable = false)
     private BigDecimal hourlyRate;
 
-
-    @Column(name = "hours_worked", columnDefinition = "INTEGER DEFAULT 0")
+    @Column(name = "hours_worked")
     private Integer hoursWorked = 0;
 
     // Constructors
