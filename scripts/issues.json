@@ -1,0 +1,243 @@
+{
+  "issues": [
+    {
+      "id": 1,
+      "title": "Fix Jakarta/Javax Import Conflicts",
+      "priority": "P0",
+      "type": "Bug",
+      "phase": 1,
+      "milestone": "Milestone 1: Working Baseline",
+      "labels": ["bug", "compilation-error", "dependencies", "P0"],
+      "description": "The project currently has compilation errors due to mixed javax and jakarta imports. All imports should use jakarta.persistence.* consistently for Spring Boot 3.x compatibility.",
+      "current_errors": [
+        "package javax.persistence does not exist",
+        "package javax.validation.constraints does not exist"
+      ],
+      "acceptance_criteria": [
+        "Replace all javax.persistence.* imports with jakarta.persistence.*",
+        "Replace all javax.validation.* imports with jakarta.validation.*", 
+        "Project compiles without import-related errors",
+        "All entity annotations work correctly"
+      ],
+      "files_to_update": [
+        "src/main/java/com/taskjava/task/models/Task.java",
+        "src/main/java/com/taskjava/task/models/BillableTask.java",
+        "src/main/java/com/taskjava/task/models/InternalTask.java"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Fix @Column Annotation Usage",
+      "priority": "P0",
+      "type": "Bug", 
+      "phase": 1,
+      "milestone": "Milestone 1: Working Baseline",
+      "labels": ["bug", "compilation-error", "jpa-annotations", "P0"],
+      "description": "The project is incorrectly using Spring Data @Column annotations instead of JPA @Column annotations, causing compilation errors.",
+      "current_errors": [
+        "cannot find symbol: method name() location: @interface org.springframework.data.relational.core.mapping.Column",
+        "cannot find symbol: method precision() location: @interface org.springframework.data.relational.core.mapping.Column"
+      ],
+      "acceptance_criteria": [
+        "Replace all Spring Data @Column imports with JPA @Column imports",
+        "Ensure all @Column annotation attributes are valid JPA attributes",
+        "Project compiles without @Column-related errors", 
+        "Database column mappings work correctly"
+      ],
+      "technical_details": "Use jakarta.persistence.Column instead of org.springframework.data.relational.core.mapping.Column"
+    },
+    {
+      "id": 3,
+      "title": "Add Missing @Inheritance Strategy to Task Entity",
+      "priority": "P0",
+      "type": "Enhancement",
+      "phase": 1,
+      "milestone": "Milestone 1: Working Baseline", 
+      "labels": ["enhancement", "jpa-inheritance", "entity-design", "P0"],
+      "description": "The base Task entity is missing the @Inheritance annotation, which is required for JPA entity inheritance to work properly.",
+      "acceptance_criteria": [
+        "Add @Inheritance annotation to Task entity",
+        "Choose appropriate inheritance strategy (TABLE_PER_CLASS, SINGLE_TABLE, or JOINED)",
+        "Add @DiscriminatorColumn if using SINGLE_TABLE strategy",
+        "Add @DiscriminatorValue to BillableTask and InternalTask",
+        "Document the chosen inheritance strategy and reasoning"
+      ],
+      "technical_details": "Recommended strategy: @Inheritance(strategy = InheritanceType.SINGLE_TABLE) for simplicity"
+    },
+    {
+      "id": 4,
+      "title": "Add Missing Validation Annotations",
+      "priority": "P1",
+      "type": "Enhancement",
+      "phase": 1,
+      "milestone": "Milestone 1: Working Baseline",
+      "labels": ["enhancement", "validation", "data-integrity", "P1"],
+      "description": "Add proper validation annotations to ensure data integrity and provide meaningful error messages.",
+      "acceptance_criteria": [
+        "Add @NotNull validation to required fields (title, dueDate, status)",
+        "Add @NotBlank to string fields that shouldn't be empty",
+        "Add @DecimalMin and @DecimalMax to hourlyRate in BillableTask", 
+        "Add @Size constraints to string fields with length limits",
+        "Add @PastOrPresent or @Future to dueDate as appropriate"
+      ],
+      "fields_to_validate": {
+        "Task": "title (NotBlank), dueDate (NotNull), status (NotNull)",
+        "BillableTask": "hourlyRate (NotNull, DecimalMin)",
+        "InternalTask": "department (NotBlank), priority (NotNull)"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Ensure Project Builds Successfully",
+      "priority": "P0",
+      "type": "Task",
+      "phase": 1,
+      "milestone": "Milestone 1: Working Baseline",
+      "labels": ["task", "build", "integration", "P0"],
+      "description": "After fixing all compilation errors, ensure the project builds successfully and all tests pass.",
+      "acceptance_criteria": [
+        "./mvnw clean compile completes without errors",
+        "./mvnw test passes all existing tests",
+        "./mvnw spring-boot:run starts the application successfully",
+        "No compilation warnings related to the fixes"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Create TaskRepository Interface",
+      "priority": "P1",
+      "type": "Feature",
+      "phase": 2,
+      "milestone": "Milestone 2: Core Task Management",
+      "labels": ["feature", "repository", "data-access", "P1"],
+      "description": "Create Spring Data JPA repository interface for Task entities to enable database operations.",
+      "acceptance_criteria": [
+        "Create TaskRepository interface extending JpaRepository<Task, Long>",
+        "Add custom query methods for common operations",
+        "Add repository for BillableTask with hourly rate queries",
+        "Add repository for InternalTask with department and priority queries"
+      ],
+      "files_to_create": [
+        "src/main/java/com/taskjava/task/repositories/TaskRepository.java",
+        "src/main/java/com/taskjava/task/repositories/BillableTaskRepository.java", 
+        "src/main/java/com/taskjava/task/repositories/InternalTaskRepository.java"
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Add Service Layer for Business Logic",
+      "priority": "P1", 
+      "type": "Feature",
+      "phase": 2,
+      "milestone": "Milestone 2: Core Task Management",
+      "labels": ["feature", "service-layer", "business-logic", "P1"],
+      "description": "Implement service layer to handle business logic and provide a clean API for controllers.",
+      "acceptance_criteria": [
+        "Create TaskService interface with CRUD operations",
+        "Implement TaskServiceImpl with business logic",
+        "Add methods for task status management",
+        "Add methods for overdue task detection", 
+        "Add methods for calculating billable hours/costs",
+        "Include proper exception handling"
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Create Unit Tests for All Entities",
+      "priority": "P1",
+      "type": "Testing", 
+      "phase": 2,
+      "milestone": "Milestone 2: Core Task Management",
+      "labels": ["testing", "unit-tests", "entities", "P1"],
+      "description": "Create comprehensive unit tests for all entity classes to ensure proper functionality.",
+      "acceptance_criteria": [
+        "Test Task entity creation and validation",
+        "Test BillableTask hourly rate calculations",
+        "Test InternalTask priority and department handling",
+        "Test entity inheritance behavior",
+        "Test validation annotations work correctly",
+        "Achieve minimum 80% code coverage for entities"
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Add Integration Tests",
+      "priority": "P2",
+      "type": "Testing",
+      "phase": 2,
+      "milestone": "Milestone 2: Core Task Management", 
+      "labels": ["testing", "integration-tests", "database", "P2"],
+      "description": "Create integration tests to verify database operations and repository functionality.",
+      "acceptance_criteria": [
+        "Test repository CRUD operations",
+        "Test custom query methods",
+        "Test entity inheritance at database level",
+        "Test transaction handling",
+        "Use @DataJpaTest for repository testing",
+        "Use @SpringBootTest for full integration testing"
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Document Inheritance Strategy",
+      "priority": "P2",
+      "type": "Documentation",
+      "phase": 2,
+      "milestone": "Milestone 2: Core Task Management",
+      "labels": ["documentation", "jpa-inheritance", "P2"],
+      "description": "Document the chosen JPA inheritance strategy and explain the reasoning behind the choice.",
+      "acceptance_criteria": [
+        "Create documentation explaining the inheritance strategy used",
+        "Compare different inheritance strategies",
+        "Explain pros and cons of the chosen strategy",
+        "Include database schema examples",
+        "Add performance considerations"
+      ]
+    }
+  ],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Fix Current Implementation",
+      "priority": "Critical",
+      "description": "Must be completed first - fixes compilation errors",
+      "issues": [1, 2, 3, 4, 5]
+    },
+    {
+      "phase": 2, 
+      "name": "Complete Task Management System",
+      "priority": "High",
+      "description": "Core functionality for task management",
+      "issues": [6, 7, 8, 9, 10]
+    },
+    {
+      "phase": 3,
+      "name": "Implement PR Company System", 
+      "priority": "Medium",
+      "description": "Extended functionality for contact management",
+      "issues": [11, 12, 13, 14, 15]
+    },
+    {
+      "phase": 4,
+      "name": "Documentation and Analysis",
+      "priority": "Medium", 
+      "description": "Documentation and SQL vs JPQL analysis",
+      "issues": [16, 17, 18]
+    },
+    {
+      "phase": 5,
+      "name": "Final Polish",
+      "priority": "Low",
+      "description": "Polish, optimization, and advanced documentation", 
+      "issues": [19, 20, 21, 22, 23]
+    }
+  ],
+  "summary": {
+    "total_issues": 23,
+    "critical_p0": 3,
+    "high_p1": 6, 
+    "medium_p2": 8,
+    "low_p3": 6,
+    "estimated_timeline_weeks": 4
+  }
+}
