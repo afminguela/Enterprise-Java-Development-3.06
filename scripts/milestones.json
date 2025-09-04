@@ -1,0 +1,55 @@
+{
+  "milestones": [
+    {
+      "title": "Milestone 1: Working Baseline",
+      "description": "Fix all compilation errors and get project building successfully. This includes resolving Jakarta/javax import conflicts, fixing JPA annotation issues, and ensuring the project compiles and runs.",
+      "due_date_offset_weeks": 1,
+      "success_criteria": [
+        "Project compiles without errors",
+        "Basic tests pass", 
+        "Application starts successfully",
+        "All validation annotations work correctly"
+      ],
+      "issues": ["#1", "#2", "#3", "#4", "#5"]
+    },
+    {
+      "title": "Milestone 2: Core Task Management",
+      "description": "Complete the task management system with repositories, services, and comprehensive testing. Implement full CRUD operations and business logic for both BillableTask and InternalTask entities.",
+      "due_date_offset_weeks": 2,
+      "success_criteria": [
+        "Task CRUD operations work",
+        "Repository layer complete with custom queries",
+        "Service layer implemented with business logic", 
+        "Comprehensive unit and integration tests",
+        "Inheritance strategy documented"
+      ],
+      "issues": ["#6", "#7", "#8", "#9", "#10"]
+    },
+    {
+      "title": "Milestone 3: Contact Management System", 
+      "description": "Implement the PR company contact system with embedded Name entities. This demonstrates advanced JPA concepts including embedded entities and complex queries.",
+      "due_date_offset_weeks": 3,
+      "success_criteria": [
+        "Contact entities implemented with embedded Name",
+        "Repository layer with embedded field queries",
+        "Service layer for contact management",
+        "Integration tests for embedded functionality", 
+        "Verify embedded fields are not stored in separate tables"
+      ],
+      "issues": ["#11", "#12", "#13", "#14", "#15"]
+    },
+    {
+      "title": "Milestone 4: Documentation Complete",
+      "description": "Complete all documentation requirements including SQL vs JPQL analysis, comprehensive code documentation, and deployment guides. This milestone focuses on knowledge transfer and production readiness.",
+      "due_date_offset_weeks": 4,
+      "success_criteria": [
+        "SQL vs JPQL analysis complete with examples",
+        "Comprehensive JavaDoc documentation", 
+        "Deployment and configuration guides",
+        "Performance optimization recommendations",
+        "Example data and use cases documented"
+      ],
+      "issues": ["#16", "#17", "#18", "#19", "#20", "#21", "#22", "#23"]
+    }
+  ]
+}
