@@ -1,21 +1,13 @@
 package com.taskjava.task.models;
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import jakarta.persistence.*;
-import org.antlr.v4.runtime.misc.NotNull;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.jpa.repository.*;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 
 
 // Base Task Entity (Abstract class using Table Per Class inheritance)
 @Entity
 @Table(name = "tasks")
-
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "task_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class Task {
 
     @Id
@@ -29,7 +21,6 @@ public abstract class Task {
     @Column(name = "due_date")
     private LocalDate dueDate;
 
-    @NotNull
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean status = false; // false = incomplete, true = complete
 

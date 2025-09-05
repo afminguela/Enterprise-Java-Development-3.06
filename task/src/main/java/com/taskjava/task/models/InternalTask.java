@@ -4,7 +4,7 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import org.springframework.data.relational.core.mapping.Column;
+import jakarta.persistence.Column;
 
 import java.time.LocalDate;
 
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class InternalTask extends Task {
 
 
-    @Column(name = "department", length = 100)
+    @Column(name = "department")
     private String department;
 
     @Enumerated(EnumType.STRING)
